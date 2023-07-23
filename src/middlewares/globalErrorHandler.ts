@@ -1,8 +1,8 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import { IGenericErrorMessage } from "../interfaces/genericErrorMessage";
-import handleValidationError from "../errors/handleValidationError";
+import config from "../config";
 import ApiErrors from "../errors/Apierror";
-import config from "../../config";
+import handleValidationError from "../errors/handleValidationError";
+import { IGenericErrorMessage } from "../interfaces/genericErrorMessage";
 
 const globalErrorHandler: ErrorRequestHandler = async (
   error,
@@ -11,10 +11,10 @@ const globalErrorHandler: ErrorRequestHandler = async (
   next: NextFunction
 ) => {
   let statusCode = 500;
-  let message = 'Something went wrong';
+  let message = "Something went wrong";
   let errorMessages: IGenericErrorMessage[] = [];
 
-  if (error?.name === 'validationError') {
+  if (error?.name === "validationError") {
     const simplifiedError = handleValidationError(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
@@ -25,7 +25,7 @@ const globalErrorHandler: ErrorRequestHandler = async (
     errorMessages = error?.message
       ? [
           {
-            path: '',
+            path: "",
             message: error?.message,
           },
         ]
@@ -35,7 +35,7 @@ const globalErrorHandler: ErrorRequestHandler = async (
     errorMessages = error?.message
       ? [
           {
-            path: '',
+            path: "",
             message: error?.message,
           },
         ]
@@ -46,7 +46,7 @@ const globalErrorHandler: ErrorRequestHandler = async (
     success: false,
     message,
     errorMessages,
-    stack: config.env !== 'production' ? error?.stack : undefined,
+    stack: config.env !== "production" ? error?.stack : undefined,
   });
   next();
 };
