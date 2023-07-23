@@ -3,7 +3,7 @@ import { Response } from 'express';
 
 type IAPiResponse<T> = {
   success: boolean;
-  statusCode: number;
+  statusCode: number ;
   message?: string | null;
   meta?: {
     page: number;
