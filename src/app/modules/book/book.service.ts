@@ -7,4 +7,20 @@ const createBook = async (book: IBook): Promise<IBook | null> => {
     return createdCow;
   };
 
-  export const BookServices = {createBook}
+  const getAllBooks = async (
+  ): Promise<IBook[]> => {
+
+
+    const result = await Book.find()
+
+    return  result
+  
+  };
+
+
+  const getSingleBook = async (id: string): Promise<IBook | null> => {
+    const result = await Book.findById(id);
+    return result;
+  };
+
+  export const BookServices = {createBook ,getAllBooks , getSingleBook}

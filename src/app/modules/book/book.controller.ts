@@ -3,6 +3,7 @@ import catchAsync from "../../../shared/catchAsync";
 import sendAPiResponse from "../../../shared/sendApiResponse";
 import httpStatus from 'http-status';
 import { BookServices } from "./book.service";
+import { IBook } from "./book.interface";
 
 
 const createBook : RequestHandler = catchAsync(
@@ -21,4 +22,32 @@ const createBook : RequestHandler = catchAsync(
 
 )
 
-export const BookController = {createBook}
+const getAllBooks: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+ 
+      const result = await BookServices.getAllBooks();
+  
+      sendAPiResponse<IBook[]>(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Books retrieved successfully',
+        data: result,
+      });
+    }
+  );
+  
+  const getSingleBook: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+      const id = req.params.id;
+      const result = await BookServices.getSingleBook(id);
+      sendAPiResponse<IBook>(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'book retrieved successfully',
+        data: result,
+      });
+    }
+  );
+  
+
+export const BookController = {createBook , getAllBooks , getSingleBook}
